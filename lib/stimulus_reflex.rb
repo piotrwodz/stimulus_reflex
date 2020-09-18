@@ -17,8 +17,12 @@ require "stimulus_reflex/broadcasters/nothing_broadcaster"
 require "stimulus_reflex/broadcasters/page_broadcaster"
 require "stimulus_reflex/broadcasters/selector_broadcaster"
 require "generators/stimulus_reflex_generator"
+require "stimulus_reflex/node_package_version"
 
 module StimulusReflex
-  class Engine < Rails::Engine
+	class Engine < Rails::Engine
+		initializer :verify_version do
+			StimulusReflex::NodePackageVersion.new.verify
+		end
   end
 end
