@@ -4,16 +4,6 @@ module StimulusReflex
   class Logger
     attr_accessor :reflex, :current_operation
 
-    COLORS = {
-      red: "31",
-      green: "32",
-      yellow: "33",
-      blue: "34",
-      magenta: "35",
-      cyan: "36",
-      white: "37"
-    }
-
     def initialize(reflex)
       @reflex = reflex
       @current_operation = 1
@@ -22,13 +12,20 @@ module StimulusReflex
     def print
       puts
       reflex.broadcaster.operations.each do
-        puts StimulusReflex.config.logging.call(self) + "\e[0m"
+        puts config_logging.call(self) + "\e[0m"
         @current_operation += 1
       end
       puts
     end
 
     private
+
+    def config_logging
+      return @config_logging if @config_logging
+
+      StimulusReflex.config.logging.binding.eval("using StimulusReflex::Utils::Colorize")
+      @config_logging = StimulusReflex.config.logging
+    end
 
     def session_id_full
       session = reflex.request&.session
@@ -60,7 +57,7 @@ module StimulusReflex
     end
 
     def operation
-      reflex.broadcaster.operations[current_operation - 1][1]
+      reflex.broadcaster.operations[current_operation - 1][1].to_s
     end
 
     def operation_counter
@@ -78,10 +75,6 @@ module StimulusReflex
 
     def timestamp
       Time.now.strftime("%Y-%m-%d %H:%M:%S")
-    end
-
-    COLORS.each do |name, code|
-      define_method(name) { "\e[#{code}m" }
     end
 
     def method_missing method

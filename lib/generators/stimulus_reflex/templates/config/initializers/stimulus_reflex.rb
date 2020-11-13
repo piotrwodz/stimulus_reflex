@@ -16,5 +16,5 @@ StimulusReflex.configure do |config|
   # You can also use attributes from your ActionCable Connection's identifiers that resolve to valid ActiveRecord models
   # eg. if your connection is `identified_by :current_user` and your User model has an :email attribute, you can pass :email ... it will display `-` if the user isn't logged in
 
-  # config.logging = ->(r) { "#{r.timestamp} #{r.red} [#{r.session_id}] #{r.magenta} #{r.operation_counter} #{r.green} #{r.reflex_info} -> #{r.white} ##{r.selector} #{r.yellow} #{r.operation} #{r.white} via #{r.blue} #{r.mode} Morph #{r.cyan} to #{r.connection_id}" }
+  # config.logging = ->(r) { "#{r.timestamp} [#{r.session_id.red}] #{r.operation_counter.magenta} #{r.reflex_info.green} -> ##{r.selector.white} #{r.operation.yellow} via #{r.mode.blue} Morph #{"to #{r.connection_id}".cyan} " }
 end
